@@ -225,7 +225,7 @@
   .fo-add-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-family: inherit; border: 0.5px dashed var(--border-md); border-radius: var(--radius-md); padding: 5px 10px; background: transparent; color: var(--text-secondary); cursor: pointer; margin-top: 2px; }
   .fo-add-btn:hover { background: var(--surface2); }
 
-  /* ── Áreas ── */
+  /* ── Categorias ── */
   .area-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px 8px; border-radius: var(--radius-md); border: none; background: transparent; color: var(--text-secondary); font-size: 13px; font-family: inherit; cursor: pointer; text-align: left; transition: background 0.12s, color 0.12s; }
   .area-btn:hover { background: var(--surface2); color: var(--text-primary); }
   .area-btn i { font-size: 15px; flex-shrink: 0; }
@@ -420,7 +420,7 @@
   <div class="modal-box">
     <h3><i class="ti ti-edit"></i> Editar registro</h3>
     <div class="modal-form-grid full" style="margin-bottom:14px">
-      <div class="modal-group"><label>Áreas (pode marcar mais de uma)</label>
+      <div class="modal-group"><label>Categorias (pode marcar mais de uma)</label>
         <div class="area-check-grid" id="me-areas"></div>
       </div>
     </div>
@@ -429,7 +429,7 @@
       <div class="modal-group"><label>Nome</label><input type="text" id="me-name"></div>
     </div>
     <div class="modal-form-grid" id="me-campos-wrap"></div>
-    <p class="fo-hint" id="me-sem-campos" style="display:none">Esta área não usa nenhum dos campos de classificação. Para mudar isso, use o botão <strong>Áreas</strong>.</p>
+    <p class="fo-hint" id="me-sem-campos" style="display:none">Esta categoria não usa nenhum dos campos de classificação. Para mudar isso, use o botão <strong>Categorias</strong>.</p>
     <div class="modal-group" id="me-audit-wrap" style="display:none;margin-bottom:12px">
       <label>Última edição</label>
       <div id="me-audit-text" style="font-size:12px;color:var(--text-secondary)"></div>
@@ -445,7 +445,7 @@
 <div id="field-options-modal">
   <div class="modal-box fo-modal-box">
     <h3><i class="ti ti-list-details"></i> Opções dos campos</h3>
-    <p class="fo-hint">Adicione, renomeie ou remova os valores disponíveis nos campos "Tipo", "Automática", "Tributada ICMS", "Tributada IBS/CBS" e "Necessário Recusa?". A opção "-" é fixa em todos eles e significa que o campo não se aplica àquele registro. Aqui você muda os <em>valores</em> de cada campo; para escolher <em>quais campos</em> cada área exibe, use o botão <strong>Áreas</strong>. Essas opções aparecem nos formulários de edição e de nova operação, são sincronizadas automaticamente na nuvem (mesma planilha das operações) e podem ser atualizadas sempre que a legislação mudar.</p>
+    <p class="fo-hint">Adicione, renomeie ou remova os valores disponíveis nos campos "Tipo", "Automática", "Tributada ICMS", "Tributada IBS/CBS" e "Necessário Recusa?". A opção "-" é fixa em todos eles e significa que o campo não se aplica àquele registro. Aqui você muda os <em>valores</em> de cada campo; para escolher <em>quais campos</em> cada categoria exibe, use o botão <strong>Categorias</strong>. Essas opções aparecem nos formulários de edição e de nova operação, são sincronizadas automaticamente na nuvem (mesma planilha das operações) e podem ser atualizadas sempre que a legislação mudar.</p>
     <div id="fo-fields"></div>
     <div class="modal-footer">
       <button class="btn-modal-cancel" onclick="resetFieldOptions()"><i class="ti ti-refresh"></i> Restaurar padrão</button>
@@ -454,13 +454,13 @@
   </div>
 </div>
 
-<!-- Áreas (grupos) modal -->
+<!-- Categorias (grupos) modal -->
 <div id="areas-modal">
   <div class="modal-box fo-modal-box">
-    <h3><i class="ti ti-category"></i> Áreas do portal</h3>
-    <p class="fo-hint">Cada área é um grupo independente de registros (Célula Fiscal, NFCOM, Recebimento, Retidos...). Você pode renomear, trocar a cor e o ícone, reordenar e criar novas áreas. O campo "Como chamar cada registro" muda os textos da tela — por exemplo, na NFCOM os registros podem se chamar "alinhamento" em vez de "operação".</p>
+    <h3><i class="ti ti-category"></i> Categorias do portal</h3>
+    <p class="fo-hint">Cada categoria é um grupo independente de registros (Célula Fiscal, NFCOM, Recebimento, Retidos...). Você pode renomear, trocar a cor e o ícone, reordenar e criar novas áreas. O campo "Como chamar cada registro" muda os textos da tela — por exemplo, na NFCOM os registros podem se chamar "alinhamento" em vez de "operação".</p>
     <div id="ar-list"></div>
-    <button class="fo-add-btn" onclick="addArea()"><i class="ti ti-plus"></i> Criar nova área</button>
+    <button class="fo-add-btn" onclick="addArea()"><i class="ti ti-plus"></i> Criar nova categoria</button>
     <div class="modal-footer">
       <button class="btn-modal-cancel" onclick="closeAreasModal()"><i class="ti ti-x"></i> Fechar</button>
     </div>
@@ -543,7 +543,7 @@
   <div class="admin-badge"><i class="ti ti-crown"></i> Modo Administradora — edição, criação e exclusão ativas</div>
   <span class="editor-name-tag" onclick="openAdminUsersModal()" title="Minha conta / Administradoras"><i class="ti ti-user"></i> <span id="editor-name-label"></span></span>
   <button class="btn-opts" id="btn-edit-log" onclick="openEditLogModal()"><i class="ti ti-history"></i> Histórico</button>
-  <button class="btn-opts" id="btn-areas" onclick="openAreasModal()"><i class="ti ti-category"></i> Áreas</button>
+  <button class="btn-opts" id="btn-areas" onclick="openAreasModal()"><i class="ti ti-category"></i> Categorias</button>
   <button class="btn-opts" id="btn-toggle-cartilhas" onclick="toggleCartilhas()"><i class="ti ti-bulb-off"></i> Ocultar "Sabia que...?"</button>
   <button class="btn-opts" id="btn-field-opts" onclick="openFieldOptionsModal()"><i class="ti ti-list-details"></i> Opções dos campos</button>
   <button class="btn-logout" onclick="logout()"><i class="ti ti-logout"></i> Sair</button>
@@ -577,7 +577,7 @@
 <div class="layout">
   <aside class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-label">Áreas</div>
+      <div class="sidebar-label">Categorias</div>
       <div id="area-filters"></div>
       <button class="fo-add-btn area-manage-btn" id="btn-manage-areas" style="display:none" onclick="openAreasModal()"><i class="ti ti-settings"></i> Gerenciar áreas</button>
     </div>
@@ -597,7 +597,7 @@
 
     <div class="add-section show" id="add-section">
       <h3 id="add-section-title"><i class="ti ti-plus"></i> Adicionar novo registro</h3>
-      <div class="form-grid full"><div class="form-group"><label>Áreas (pode marcar mais de uma)</label>
+      <div class="form-grid full"><div class="form-group"><label>Categorias (pode marcar mais de uma)</label>
         <div class="area-check-grid" id="new-areas"></div>
       </div></div>
       <div class="form-grid">
@@ -631,18 +631,18 @@ const CARTILHAS_OFF_KEY = 'nf_central_v2_cartilhas_off';
 const NA = '-';
 
 // Os cinco campos de classificação, na ordem em que sempre aparecem.
-// Cada área escolhe quais deles usa (ver campos[] em DEFAULT_AREAS).
+// Cada categoria escolhe quais deles usa (ver campos[] em DEFAULT_AREAS).
 const CAMPOS_BASE = ['tipo', 'auto', 'icms', 'ibs', 'recusa'];
-// Cada área distribui seus campos em dois lugares do card:
+// Cada categoria distribui seus campos em dois lugares do card:
 //   tags   → chips na faixa cinza de cima (quantos quiser)
 //   quadro → as caixas em evidência logo abaixo (no máximo 4)
 const MAX_QUADRO = 4;
 // Valores que não dizem nada sozinhos: o chip precisa do rótulo junto.
 const VALORES_GENERICOS = ['SIM', 'Sim', 'sim', 'NÃO', 'Não', 'não'];
 
-// ── Áreas (grupos) do portal ──────────────────────────────
-// Cada área é um grupo independente de registros. A dona pode criar,
-// renomear, recolorir, reordenar e excluir áreas pelo botão "Áreas".
+// ── Categorias (grupos) do portal ──────────────────────────────
+// Cada categoria é um grupo independente de registros. A dona pode criar,
+// renomear, recolorir, reordenar e excluir áreas pelo botão "Categorias".
 const DEFAULT_AREAS = [
   { id:'celula',      name:'CÉLULA FISCAL', color:'teal',   icon:'ti-file-invoice',   term:'operação',    termPlural:'operações',   tags:['auto'], quadro:['tipo','icms','ibs','recusa'] },
   { id:'orientacoes', name:'ORIENTAÇÕES',   color:'indigo', icon:'ti-notes',          term:'orientação',  termPlural:'orientações', tags:['auto'], quadro:['tipo','icms','ibs','recusa'] },
@@ -703,7 +703,7 @@ let currentAdminUser = null;
 // administradora (botão "Opções dos campos") para acompanhar mudanças
 // na legislação, sem precisar mexer no código.
 // O valor "-" existe em todos os campos e significa "não se aplica" —
-// usado por áreas em que aquele campo não faz sentido (ex.: NFCOM).
+// usado por categorias em que aquele campo não faz sentido (ex.: NFCOM).
 const DEFAULT_FIELD_OPTIONS = {
   tipo:   ['ENTRADA', 'SAÍDA', NA],
   auto:   ['Manual', 'Automática', 'Semi-automática', NA],
@@ -713,7 +713,7 @@ const DEFAULT_FIELD_OPTIONS = {
 };
 // ── Campos: os cinco originais + os criados pela dona ────
 // Os personalizados ficam em fieldOptions.__camposExtras e as opções de
-// cada um em fieldOptions[id], viajando na mesma sincronização das áreas.
+// cada um em fieldOptions[id], viajando na mesma sincronização das categorias.
 function camposExtras() {
   return Array.isArray(fieldOptions.__camposExtras) ? fieldOptions.__camposExtras : [];
 }
@@ -723,7 +723,7 @@ function todosOsCampos() {
 function ehCampoBase(f) { return CAMPOS_BASE.includes(f); }
 // Um campo criado pode ser compartilhado (area: null) ou pertencer a uma
 // área só. Campo exclusivo tem nome e opções próprios sem risco: como ele
-// não existe fora da área dele, nunca vira o mesmo dado com dois sentidos.
+// não existe fora da categoria dele, nunca vira o mesmo dado com dois sentidos.
 function areaDoCampo(f) {
   const c = camposExtras().find(x => x.id === f);
   return c && c.area ? c.area : null;
@@ -998,7 +998,7 @@ const BASE_OPS = [
   {code:"S553.01",name:"Devolução de Compra de Ativo Imobilizado",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"SIM",recusa:"NÃO",analise:"Verificar o documento associado no PNE. Deve ser uma nota fiscal de compra de ativo emitida pelo fornecedor. Conferir dados do fornecedor e os itens. A nota de saída deve refletir em sua totalidade a nota associada.",info:"",reforma:"",leg:""},
   {code:"S556.01",name:"Devolução de Compra de Material de Uso ou Consumo",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"SIM",recusa:"NÃO",analise:"Verificar o documento associado no PNE. Deve ser uma nota fiscal de compra de material emitida pelo fornecedor. Conferir dados do fornecedor e os itens. A nota de saída deve refletir em sua totalidade a nota associada.",info:"",reforma:"",leg:""},
   {code:"S913.01",name:"Devolução de Demonstração",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Verificar se o documento associado é uma entrada de demonstração emitida pelo fornecedor. Conferir dados e itens. A solicitação deve refletir em sua totalidade a nota associada.",info:"",reforma:"",leg:""},
-  {code:"S913.03",name:"Devolução de Demonstração (tributada)",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"Não",recusa:"NÃO",analise:"Verificar se os itens têm características de materiais de brinde e enviar email para o solicitante questionando se a área está ciente de que é uma operação tributada pelo ICMS.",info:"",reforma:"",leg:""},
+  {code:"S913.03",name:"Devolução de Demonstração (tributada)",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"Não",recusa:"NÃO",analise:"Verificar se os itens têm características de materiais de brinde e enviar email para o solicitante questionando se a categoria está ciente de que é uma operação tributada pelo ICMS.",info:"",reforma:"",leg:""},
   {code:"S949.16",name:"Devolução de Empréstimo",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Verificar se o documento associado é uma entrada de empréstimo emitida pela Globo. O documento precisa estar associado no pré nota, e essa devolução pode ser parcial ou total.",info:"",reforma:"",leg:""},
   {code:"S949.75",name:"Devolução de Leasing/Arrendamento Mercantil",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Essa é uma operação que tem um desenho diferente das demais. Em caso de dúvidas recorrer ao email de orientação. Conferir se o documento associado tem característica de leasing.",info:"",reforma:"",leg:""},
   {code:"S949.14",name:"Devolução de Locação / Aluguel",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Verificar se o documento associado é uma entrada de bem em locação emitida pela Globo. Conferir dados de emitente e destinatário.",info:"",reforma:"",leg:""},
@@ -1010,9 +1010,9 @@ const BASE_OPS = [
   {code:"S554.05",name:"Rem. de Equipamento de Uso do Funcionário Fora do Estabelecimento",tipo:"SAÍDA",auto:"Automática",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Por ser uma operação automática não requer análise. Monitorar até o status emitida.",info:"",reforma:"",leg:""},
   {code:"S554.03",name:"Rem. Externa Ativo - Exterior",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Verificar se o destinatário é exterior. Conferir os dados e itens da solicitação.",info:"",reforma:"",leg:""},
   {code:"S910.04",name:"Rem. P/ Doação de Ativo Imobilizado",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"SIM",recusa:"NÃO",analise:"Caso não tenhamos recebido email sobre a solicitação, deve ser enviado ao solicitante questionando sobre o termo de doação e se já foi aberto chamado junto à inteligência fiscal.",info:"",reforma:"",leg:""},
-  {code:"S910.06",name:"Remessa de Brinde",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"Não",recusa:"NÃO",analise:"Verificar se os itens têm características de materiais de brinde e enviar email para o solicitante questionando se a área está ciente de que é uma operação tributada pelo ICMS.",info:"",reforma:"",leg:""},
+  {code:"S910.06",name:"Remessa de Brinde",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"Não",recusa:"NÃO",analise:"Verificar se os itens têm características de materiais de brinde e enviar email para o solicitante questionando se a categoria está ciente de que é uma operação tributada pelo ICMS.",info:"",reforma:"",leg:""},
   {code:"S949.76",name:"Remessa de Equipamentos/Materiais Obsoletos",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"Não",recusa:"NÃO",analise:"Analisar se os itens são equipamentos, se consta alguma informação de ser sucata ou obsoletos e se os valores estão coerentes. Sempre observar o destinatário.",info:"",reforma:"",leg:""},
-  {code:"S949.01",name:"Remessa de Prêmio",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"SIM",recusa:"NÃO",analise:"Verificar se os itens têm características de Prêmio e enviar email para o solicitante questionando se a área está ciente de que é uma operação tributada pelo ICMS. Normalmente é emitido para pessoa física, ganhadores de algum programa da Globo.",info:"",reforma:"",leg:""},
+  {code:"S949.01",name:"Remessa de Prêmio",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"SIM",recusa:"NÃO",analise:"Verificar se os itens têm características de Prêmio e enviar email para o solicitante questionando se a categoria está ciente de que é uma operação tributada pelo ICMS. Normalmente é emitido para pessoa física, ganhadores de algum programa da Globo.",info:"",reforma:"",leg:""},
   {code:"S949.22",name:"Remessa de Resíduos P/ Descarte",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Analisar o CNAE da empresa e verificar se tem operação de descartes e resíduos. Observar os itens — normalmente são restos de tinta ou resíduos tóxicos, e os valores são baixos.",info:"",reforma:"",leg:""},
   {code:"S949.18",name:"Remessa de Troca em Garantia",tipo:"SAÍDA",auto:"Manual",icms:"Sim (se destaque ICMS)",ibs:"SIM",recusa:"NÃO",analise:"Deve constar o documento associado ao pré nota e deve ser um documento com a operação de venda ou de troca em garantia para Globo. Conferir o emitente e destinatário e os itens.",info:"",reforma:"",leg:""},
   {code:"S908.01",name:"Remessa em Comodato",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Enviar um email ao solicitante questionando se possui contrato de comodato. Caso essa informação já venha em informações complementares, não é necessário o email.",info:"",reforma:"",leg:""},
@@ -1035,7 +1035,7 @@ const BASE_OPS = [
   {code:"S949.79",name:"Simples Remessa",tipo:"SAÍDA",auto:"Semi-automática",icms:"SIM",ibs:"SIM",recusa:"NÃO",analise:"Enviar um email ao solicitante questionando porque foi solicitada essa operação, indicando ser uma operação tributada pelo ICMS e só deve ser utilizada em último caso, quando não possuir uma operação definida em legislação para o objetivo desejado.",info:"",reforma:"",leg:""},
   {code:"S552.01",name:"Transferência de Ativo Imobilizado",tipo:"SAÍDA",auto:"Automática",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Por ser uma operação automática não requer análise. Porém é necessário verificar se seguirá de forma automática até a mudança do status para emitida.",info:"",reforma:"",leg:""},
   {code:"S557.01",name:"Transferência de Material de Uso ou Consumo",tipo:"SAÍDA",auto:"Automática",icms:"Não",ibs:"Não",recusa:"NÃO",analise:"Por ser uma operação automática não requer análise. Porém é necessário verificar se seguirá de forma automática até a mudança do status para emitida.",info:"",reforma:"",leg:""},
-  {code:"S551.01",name:"Venda de bem do ativo imobilizado",tipo:"SAÍDA",auto:"Semi-automática",icms:"Não",ibs:"SIM",recusa:"NÃO",analise:"Enviar um email ao solicitante para confirmar se a área contábil está ciente dessa venda. Alguns solicitantes já preenchem essa informação em observações no pré nota, evitando que seja necessário o envio desse email.",info:"",reforma:"",leg:""},
+  {code:"S551.01",name:"Venda de bem do ativo imobilizado",tipo:"SAÍDA",auto:"Semi-automática",icms:"Não",ibs:"SIM",recusa:"NÃO",analise:"Enviar um email ao solicitante para confirmar se a categoria contábil está ciente dessa venda. Alguns solicitantes já preenchem essa informação em observações no pré nota, evitando que seja necessário o envio desse email.",info:"",reforma:"",leg:""},
   {code:"S949.05",name:"Venda de Material de Uso ou Consumo",tipo:"SAÍDA",auto:"Manual",icms:"SIM",ibs:"SIM",recusa:"NÃO",analise:"Verificar se teve alinhamento para essa solicitação, pois a Globo não tem habitualidade de emissão de nota com essa operação.",info:"",reforma:"",leg:""},
   {code:"S949.04",name:"Venda de Sucata - Estadual",tipo:"SAÍDA",auto:"Manual",icms:"Não",ibs:"SIM",recusa:"NÃO",analise:"Analisar se o destinatário tem em seu CNAE atividade compatível com sucata. Para alguns casos essa operação pode seguir de forma automática — acompanhar o status.",info:"",reforma:"",leg:""}
 ];
@@ -1092,7 +1092,7 @@ async function loadFromSheets() {
     // "areas" fica aceito também, caso o backend passe a enviá-lo.
     // Se o backend ainda não devolver as áreas, mantém as que já estão
     // salvas neste navegador em vez de voltar para as três padrão.
-    /* Configuração estrutural compartilhada: cores, tags e caixas por área. */
+    /* Configuração estrutural compartilhada: cores, tags e caixas por categoria. */
     if (data.portalConfig && typeof data.portalConfig === 'object') {
       try { localStorage.setItem('portal_fiscal_config_areas_v1', JSON.stringify(data.portalConfig)); } catch (e) {}
     }
@@ -1115,7 +1115,7 @@ async function loadFromSheets() {
         if (Array.isArray(local.quadro)) area.quadro = local.quadro.slice(0, 4);
         if (Array.isArray(local.tags)) area.tags = local.tags.slice(0, 2);
         /*
-         * Identidade da área editada pela administração. A planilha antiga
+         * Identidade da categoria editada pela administração. A planilha antiga
          * pode não devolver esses campos; nesse caso a escolha feita neste
          * navegador continua valendo em vez de voltar para o padrão.
          */
@@ -1124,7 +1124,7 @@ async function loadFromSheets() {
         });
       });
       /*
-       * Áreas criadas neste navegador que a planilha ainda não conhece são
+       * Categorias criadas neste navegador que a planilha ainda não conhece são
        * preservadas — do contrário, sumiriam a cada F5. O próximo saveAll
        * as reenviará; se o Apps Script gravar, elas vêm no data.areas na
        * sessão seguinte; se não, continuam sendo mantidas por este bloco.
@@ -1132,7 +1132,7 @@ async function loadFromSheets() {
       areasLocais.forEach(function(local) {
         if (!local || !local.id) return;
         if (areas.some(function(a) { return a.id === local.id; })) return;
-        /* Só áreas com id gerado localmente (prefixo 'a' + base36). Áreas
+        /* Só áreas com id gerado localmente (prefixo 'a' + base36). Categorias
            conhecidas do backend têm ids humanos ('celula', 'nfcom'). */
         if (!/^a[a-z0-9]+$/.test(local.id)) return;
         areas.push(local);
@@ -1247,7 +1247,7 @@ function allOps() {
 function getOp(realIdx) { return allOps()[realIdx]; }
 
 // ═══════════════════════════════════════════════════════════════
-// ÁREAS — cada registro pertence a uma ou mais áreas
+// CATEGORIAS — cada registro pertence a uma ou mais áreas
 // ═══════════════════════════════════════════════════════════════
 function normalizeAreas(arr) {
   let list = Array.isArray(arr) ? arr.filter(a => a && a.id && a.name).map(a => ({
@@ -1257,7 +1257,7 @@ function normalizeAreas(arr) {
     icon:  AREA_ICONS[a.icon] ? a.icon : 'ti-folder',
     term:       a.term       ? String(a.term)       : 'registro',
     termPlural: a.termPlural ? String(a.termPlural) : 'registros',
-    // Sem lista definida, a área usa todos os campos (comportamento antigo).
+    // Sem lista definida, a categoria usa todos os campos (comportamento antigo).
     tags: null, quadro: null, campos: a.campos
   })) : [];
   if (!list.length) list = DEFAULT_AREAS.map(a => Object.assign({}, a));
@@ -1300,7 +1300,7 @@ function camposDaArea(a) {
   return todosOsCampos().filter(f => juntos.includes(f));
 }
 // Como este registro se distribui no card. Em registro que está em mais de
-// uma área vale a união; se o quadro passar de 4, o excedente vira tag —
+// uma categoria vale a união; se o quadro passar de 4, o excedente vira tag —
 // nada some e as quatro caixas continuam alinhadas.
 function layoutDoOp(op) {
   const ids = opAreaIds(op).filter(id => getArea(id));
@@ -1336,8 +1336,8 @@ function chipCampo(op, f) {
   }
   return '<span class="badge ' + cls + '">' + esc(texto) + '</span>';
 }
-// Registro em mais de uma área mostra a união dos campos: nunca esconde
-// algo que uma das áreas dele considera necessário.
+// Registro em mais de uma categoria mostra a união dos campos: nunca esconde
+// algo que uma das categorias dele considera necessário.
 function camposDeAreas(ids) {
   const juntos = [];
   (ids || []).forEach(id => {
@@ -1368,8 +1368,8 @@ function areaStyle(a) {
   const c = (a && AREA_COLORS[a.color]) || AREA_COLORS.slate;
   return { bg: c[0], fg: c[1], bd: c[2] };
 }
-// Registros salvos antes das áreas não têm o campo "areas". Nesse caso,
-// deduzimos: o que era ORIENTAÇÕES vai para a área ORIENTAÇÕES e todo o
+// Registros salvos antes das categorias não têm o campo "areas". Nesse caso,
+// deduzimos: o que era ORIENTAÇÕES vai para a categoria ORIENTAÇÕES e todo o
 // resto (os 67 casos originais) fica na CÉLULA FISCAL.
 function opAreaIds(op) {
   if (Array.isArray(op.areas) && op.areas.length) return op.areas;
@@ -1410,7 +1410,7 @@ function writeOpAreas(op, ids) {
     overrides[op.code].areas = ids;
   }
 }
-// Registros da área selecionada (usado só para contagens e estatísticas —
+// Registros da categoria selecionada (usado só para contagens e estatísticas —
 // a lista da tela usa visibleOps(), que preserva o índice real).
 function areaOps() {
   const ops = allOps();
@@ -1418,7 +1418,7 @@ function areaOps() {
 }
 function countAreaOps(id) { return allOps().filter(o => opAreaIds(o).includes(id)).length; }
 function matchesArea(op) { return currentArea === 'all' || opAreaIds(op).includes(currentArea); }
-// Como chamar um registro na área atual (operação / alinhamento / ...).
+// Como chamar um registro na categoria atual (operação / alinhamento / ...).
 function currentTerms() {
   const a = getArea(currentArea);
   return a ? { s: a.term, p: a.termPlural } : { s: 'registro', p: 'registros' };
@@ -1450,7 +1450,7 @@ function corParaValor(v, i) {
   return PALETA_VALOR[i % PALETA_VALOR.length];
 }
 
-// Toda a barra lateral é gerada a partir da área. O filtro atual é
+// Toda a barra lateral é gerada a partir da categoria. O filtro atual é
 // { escopo: 'all' | 'custom' | 'valor', campo, valor }. Só há um por vez.
 let filtroAtual = { escopo: 'all' };
 function opUsaCampo(op, campo) {
@@ -1541,8 +1541,8 @@ function renderFiltros() {
   wrap.innerHTML = html;
 }
 
-// Resumo: dentro de uma área, mostra a divisão pelo primeiro campo do
-// quadro; em "Todas as áreas", mostra quantos registros cada área tem.
+// Resumo: dentro de uma categoria, mostra a divisão pelo primeiro campo do
+// quadro; em "Todas as categorias", mostra quantos registros cada categoria tem.
 function renderResumo() {
   const wrap = document.getElementById('resumo-wrap');
   if (!wrap) return;
@@ -1578,7 +1578,7 @@ function renderAreaFilters() {
   const all = currentArea === 'all';
   let html = '<button class="area-btn' + (all ? ' active' : '') + '"' +
     (all ? ' style="background:var(--surface2);color:var(--text-primary)"' : '') +
-    ' onclick="setArea(\'all\')"><i class="ti ti-layout-grid"></i><span class="nm">Todas as áreas</span>' +
+    ' onclick="setArea(\'all\')"><i class="ti ti-layout-grid"></i><span class="nm">Todas as categorias</span>' +
     '<span class="count">' + allOps().length + '</span></button>';
   html += areas.map(a => {
     const st = areaStyle(a);
@@ -1592,7 +1592,7 @@ function renderAreaFilters() {
   }).join('');
   wrap.innerHTML = html;
 }
-// Ajusta os textos que dependem da área escolhida.
+// Ajusta os textos que dependem da categoria escolhida.
 function repararCamposOrfaos() {
   if (fieldOptions.__reparouCamposOrfaos) return false;
   fieldOptions.__reparouCamposOrfaos = true;
@@ -1613,11 +1613,11 @@ function refreshAreaUI() {
   const a = getArea(currentArea);
   const t = currentTerms();
   const title = document.getElementById('add-section-title');
-  if (title) title.innerHTML = '<i class="ti ti-plus"></i> Adicionar em ' + esc(a ? a.name : 'uma área');
+  if (title) title.innerHTML = '<i class="ti ti-plus"></i> Adicionar em ' + esc(a ? a.name : 'uma categoria');
   const btn = document.getElementById('btn-add-op');
   if (btn) btn.innerHTML = '<i class="ti ti-plus"></i> Adicionar ' + esc(t.s);
   const search = document.getElementById('search-input');
-  if (search) search.placeholder = 'Buscar em ' + (a ? a.name : 'todas as áreas') + ' por código, nome, análise...';
+  if (search) search.placeholder = 'Buscar em ' + (a ? a.name : 'todas as categorias') + ' por código, nome, análise...';
   renderAreaChecks('new', a ? [a.id] : (areas[0] ? [areas[0].id] : []));
   renderCamposForm('new');
   aplicarCamposVisiveis('new');
@@ -1628,7 +1628,7 @@ function renderAreaChecks(prefix, selected) {
   const wrap = document.getElementById(prefix + '-areas');
   if (!wrap) return;
   const sel = Array.isArray(selected) ? selected : [];
-  if (!areas.length) { wrap.innerHTML = '<span class="fo-hint">Nenhuma área cadastrada.</span>'; return; }
+  if (!areas.length) { wrap.innerHTML = '<span class="fo-hint">Nenhuma categoria cadastrada.</span>'; return; }
   wrap.innerHTML = areas.map(a => {
     const on = sel.includes(a.id);
     const st = areaStyle(a);
@@ -1685,7 +1685,7 @@ function renderAreasModal() {
         '<span class="ar-count">' + n + ' registro' + (n === 1 ? '' : 's') + '</span>' +
         '<button class="ar-icon-btn" title="Subir" onclick="moveArea(\'' + a.id + '\',-1)"' + (idx === 0 ? ' disabled style="opacity:.3"' : '') + '><i class="ti ti-arrow-up"></i></button>' +
         '<button class="ar-icon-btn" title="Descer" onclick="moveArea(\'' + a.id + '\',1)"' + (idx === areas.length - 1 ? ' disabled style="opacity:.3"' : '') + '><i class="ti ti-arrow-down"></i></button>' +
-        '<button class="ar-icon-btn del" title="Excluir área" onclick="removeArea(\'' + a.id + '\')"><i class="ti ti-trash"></i></button>' +
+        '<button class="ar-icon-btn del" title="Excluir categoria" onclick="removeArea(\'' + a.id + '\')"><i class="ti ti-trash"></i></button>' +
       '</div>' +
       '<div class="ar-line">' +
         '<span class="ar-mini-label">Cor</span>' +
@@ -1713,7 +1713,7 @@ function renderAreasModal() {
               '</div>';
           }).join('') + '</div>' +
           '<button class="ar-criar-campo" onclick="criarCampoNaArea(\'' + a.id + '\')">' +
-            '<i class="ti ti-plus"></i> Criar campo só desta área</button>' +
+            '<i class="ti ti-plus"></i> Criar campo só desta categoria</button>' +
           '<div class="ar-hint">Tag aparece na faixa de cima · Quadro ocupa uma das caixas em evidência (' +
             quadroDaArea(a).length + ' de ' + MAX_QUADRO + ' em uso)</div>' +
         '</div>' +
@@ -1730,7 +1730,7 @@ function setModoCampo(areaId, campo, modo) {
   const a = getArea(areaId);
   if (!a) return;
   const dono = areaDoCampo(campo);
-  if (dono && dono !== areaId) return; // campo exclusivo de outra área
+  if (dono && dono !== areaId) return; // campo exclusivo de outra categoria
   let tags   = tagsDaArea(a).filter(x => x !== campo);
   let quadro = quadroDaArea(a).filter(x => x !== campo);
   if (modo === 'tag') tags.push(campo);
@@ -1764,13 +1764,13 @@ function updateAreaField(id, field, value) {
 }
 function addArea() {
   const id = 'a' + Date.now().toString(36);
-  areas.push({ id, name: 'NOVA ÁREA', color: 'slate', icon: 'ti-folder', term: 'registro', termPlural: 'registros',
+  areas.push({ id, name: 'NOVA CATEGORIA', color: 'slate', icon: 'ti-folder', term: 'registro', termPlural: 'registros',
                tags: [], quadro: [] });
-  // Os quatro campos da área precisam existir ANTES de salvar; caso contrário
-  // a área é gravada sem nenhuma configuração de campos.
+  // Os quatro campos da categoria precisam existir ANTES de salvar; caso contrário
+  // a categoria é gravada sem nenhuma configuração de campos.
   if (typeof prepararCamposPorArea === 'function') prepararCamposPorArea();
   saveAll();
-  logEdit('Criou área', '', 'NOVA ÁREA');
+  logEdit('Criou área', '', 'NOVA CATEGORIA');
   renderAreasModal(); renderAreaFilters();
 }
 function moveArea(id, dir) {
@@ -1783,16 +1783,16 @@ function moveArea(id, dir) {
   renderAreasModal(); renderAreaFilters();
 }
 function removeArea(id) {
-  if (areas.length <= 1) { alert('É necessário manter ao menos uma área.'); return; }
+  if (areas.length <= 1) { alert('É necessário manter ao menos uma categoria.'); return; }
   const a = getArea(id);
   if (!a) return;
   const n = countAreaOps(id);
   const rest = areas.filter(x => x.id !== id);
   const destino = rest[0];
   const aviso = n ? (n === 1
-      ? '\n\nO registro dessa área será movido para "' + destino.name + '".'
-      : '\n\nOs ' + n + ' registros dessa área serão movidos para "' + destino.name + '".') : '';
-  if (!confirm('Excluir a área "' + a.name + '"?' + aviso)) return;
+      ? '\n\nO registro dessa categoria será movido para "' + destino.name + '".'
+      : '\n\nOs ' + n + ' registros dessa categoria serão movidos para "' + destino.name + '".') : '';
+  if (!confirm('Excluir a categoria "' + a.name + '"?' + aviso)) return;
   if (n) {
     allOps().forEach(op => {
       const ids = opAreaIds(op);
@@ -1881,14 +1881,14 @@ function render() {
 
   const container = document.getElementById('results-container');
   if (!filtered.length) {
-    container.innerHTML = '<div class="empty"><i class="ti ti-search-off"></i><p>Nada encontrado nesta área.</p></div>';
+    container.innerHTML = '<div class="empty"><i class="ti ti-search-off"></i><p>Nada encontrado nesta categoria.</p></div>';
     return;
   }
 
   container.innerHTML = filtered.map(({op,ri}) => {
     const codeClass = op.tipo==='ENTRADA'?'entrada':op.tipo==='SAÍDA'?'saida':'orientacoes';
     const isOpen = expandedIdx===ri;
-    // Cada área decide o que é tag (faixa) e o que ocupa as caixas.
+    // Cada categoria decide o que é tag (faixa) e o que ocupa as caixas.
     const layout = layoutDoOp(op);
     const camposGrade = layout.quadro;
     // "-" significa que o campo não se aplica: fica cinza, sem alarme visual.
@@ -2045,7 +2045,7 @@ function saveMetaModal() {
     code: document.getElementById('me-code').value.trim(),
     name: document.getElementById('me-name').value.trim()
   };
-  // Campo escondido pela área mantém o valor que já tinha — assim ligar o
+  // Campo escondido pela categoria mantém o valor que já tinha — assim ligar o
   // campo de volta mais tarde não revela um dado apagado por engano.
   todosOsCampos().forEach(f => {
     if (!visiveis.includes(f)) {
@@ -2203,7 +2203,7 @@ function criarCampo(areaId) {
   const a = areaId ? getArea(areaId) : null;
   if (a) ligarCampoNaArea(a, id);
   saveAll();
-  logEdit('Criou o campo "NOVO CAMPO"' + (a ? ' em ' + a.name : ' (todas as áreas)'), '', '');
+  logEdit('Criou o campo "NOVO CAMPO"' + (a ? ' em ' + a.name : ' (todas as categorias)'), '', '');
   renderFieldOptionsModal();
   renderCamposForm('new');
   updateStats();
@@ -2230,7 +2230,7 @@ function definirEscopoCampo(id, areaId) {
   if (!c) return;
   c.area = areaId || null;
   fieldOptions.__camposExtras = extras;
-  // Ao virar exclusivo, o campo sai das outras áreas que o exibiam.
+  // Ao virar exclusivo, o campo sai das outras categorias que o exibiam.
   if (c.area) {
     areas.forEach(a => {
       if (a.id === c.area) return;
@@ -2241,7 +2241,7 @@ function definirEscopoCampo(id, areaId) {
   }
   saveAll();
   const a = getArea(c.area);
-  logEdit('Campo "' + c.label + '" passou a valer para ' + (a ? a.name : 'todas as áreas'), '', '');
+  logEdit('Campo "' + c.label + '" passou a valer para ' + (a ? a.name : 'todas as categorias'), '', '');
   renderFieldOptionsModal();
   updateStats();
   render();
@@ -2272,7 +2272,7 @@ function excluirCampo(id) {
   const c = camposExtras().find(x => x.id === id);
   if (!c) return;
   if (!confirm('Excluir o campo "' + c.label + '"?\n\n' +
-               'Ele sai de todas as áreas e deixa de aparecer nos registros. ' +
+               'Ele sai de todas as categorias e deixa de aparecer nos registros. ' +
                'Esta ação não pode ser desfeita.')) return;
   fieldOptions.__camposExtras = camposExtras().filter(x => x.id !== id);
   delete fieldOptions[id];
@@ -2290,7 +2290,7 @@ function excluirCampo(id) {
 function renderFieldOptionsModal() {
   const wrap = document.getElementById('fo-fields');
   const compartilhados = todosOsCampos().filter(f => !areaDoCampo(f));
-  const grupos = [{ id: null, titulo: 'Campos de todas as áreas', campos: compartilhados }]
+  const grupos = [{ id: null, titulo: 'Campos de todas as categorias', campos: compartilhados }]
     .concat(areas.map(a => ({
       id: a.id,
       titulo: 'Somente em ' + a.name,
@@ -2300,7 +2300,7 @@ function renderFieldOptionsModal() {
     const blocos = g.campos.map(field => blocoCampoHTML(field)).join('');
     const botao = '<button class="fo-add-btn" onclick="criarCampo(' +
       (g.id ? "'" + g.id + "'" : 'null') + ')"><i class="ti ti-plus"></i> Criar campo ' +
-      (g.id ? 'só desta área' : 'para todas as áreas') + '</button>';
+      (g.id ? 'só desta categoria' : 'para todas as categorias') + '</button>';
     return '<div class="fo-grupo">' +
       '<div class="fo-grupo-titulo">' + esc(g.titulo) + '</div>' +
       (blocos || '<div class="fo-areas-uso">Nenhum campo próprio ainda.</div>') +
@@ -2320,7 +2320,7 @@ function blocoCampoHTML(field) {
     const usadoPor = areas.filter(a => camposDaArea(a).includes(field)).map(a => a.name);
     const uso = usadoPor.length
       ? 'Aparece em: ' + esc(usadoPor.join(', '))
-      : 'Ainda não aparece em nenhuma área — ligue em <strong>Áreas</strong>, escolhendo Tag ou Quadro.';
+      : 'Ainda não aparece em nenhuma categoria — ligue em <strong>Categorias</strong>, escolhendo Tag ou Quadro.';
     return `
       <div class="fo-field-block">
         <div class="fo-field-head">
@@ -2328,7 +2328,7 @@ function blocoCampoHTML(field) {
           ${ehCampoBase(field)
             ? '<span class="fo-field-tag">campo original</span>'
             : `<select class="fo-escopo" onchange="definirEscopoCampo('${field}', this.value)">
-                 <option value=""${areaDoCampo(field) ? '' : ' selected'}>Todas as áreas</option>
+                 <option value=""${areaDoCampo(field) ? '' : ' selected'}>Todas as categorias</option>
                  ${areas.map(a => `<option value="${esc(a.id)}"${areaDoCampo(field) === a.id ? ' selected' : ''}>${esc(a.name)}</option>`).join('')}
                </select>
                <button class="fo-remove-btn" title="Excluir campo" onclick="excluirCampo('${field}')"><i class="ti ti-trash"></i></button>`}
@@ -2640,7 +2640,7 @@ function addOp() {
   const destino = marcadas.length ? marcadas
                 : (currentArea !== 'all' ? [currentArea] : (areas[0] ? [areas[0].id] : []));
   if (!destino.length) {
-    msg.className='msg err'; msg.textContent='Selecione ao menos uma área.'; return;
+    msg.className='msg err'; msg.textContent='Selecione ao menos uma categoria.'; return;
   }
   const visiveis = camposDeAreas(destino);
   const op = {
@@ -2676,57 +2676,106 @@ document.addEventListener('click', function(e) {
 });
 
 // ── PDF helpers ──
+/*
+ * Cores da categoria para o PDF. As mesmas paletas usadas no portal,
+ * traduzidas para hex (o PDF abre em nova janela sem as CSS vars do app).
+ */
+const PDF_CATEGORY_COLORS = {
+  teal:   { text:'#075c45', bg:'#e3f5ec', border:'#9bd8be' },
+  blue:   { text:'#1269a5', bg:'#e5f3fb', border:'#8fc6e8' },
+  coral:  { text:'#711B13', bg:'#FAECE7', border:'#F0997B' },
+  indigo: { text:'#3C3489', bg:'#EEEDFE', border:'#A9A4E8' },
+  gold:   { text:'#8A6000', bg:'#FFF8E6', border:'#E8C84A' },
+  amber:  { text:'#633806', bg:'#FAEEDA', border:'#E8C090' },
+  green:  { text:'#27500A', bg:'#EAF3DE', border:'#B7D89A' },
+  red:    { text:'#791F1F', bg:'#FCEBEB', border:'#F4C0C0' },
+  slate:  { text:'#4A4A48', bg:'#F2F2F0', border:'#C8C6C2' }
+};
+function pdfCategoryPalette(op) {
+  const ids = opAreaIds(op);
+  const a = getArea(ids[0]);
+  return (a && PDF_CATEGORY_COLORS[a.color]) || PDF_CATEGORY_COLORS.slate;
+}
+
 function buildOpHTML(op) {
   const campos = camposDoOp(op);
-  // Monta a tabela em pares, só com os campos que a área usa.
-  const pares = campos.map(f => [rotuloCampo(f), op[f] || '—']);
-  let linhas = '';
-  for (let i = 0; i < pares.length; i += 2) {
-    const a = pares[i], b = pares[i + 1];
-    linhas += b
-      ? `<tr><th>${a[0]}</th><td>${a[1]}</td><th>${b[0]}</th><td>${b[1]}</td></tr>`
-      : `<tr><th>${a[0]}</th><td colspan="3">${a[1]}</td></tr>`;
-  }
+  const cor = pdfCategoryPalette(op);
+  /* Empilhados: cada campo em sua linha (rótulo em cima, valor embaixo)
+     para leitura mais tranquila e menos "quadriculada" no PDF. */
+  const linhas = campos.map(function(f) {
+    const rot = rotuloCampo(f);
+    const val = (op[f] || '—');
+    return '<div class="pdf-field"><div class="pdf-field-label">' + rot + '</div>' +
+           '<div class="pdf-field-value">' + val + '</div></div>';
+  }).join('');
   const badgeColor = op.tipo === 'ENTRADA' ? '#0d9488' : op.tipo === 'SAÍDA' ? '#e05252' : '#8b5cf6';
   const autoColor  = op.auto === 'Automática' ? '#2f9e44' : op.auto === 'Manual' ? '#e05252' : op.auto === 'Semi-automática' ? '#e67700' : op.auto === NA ? '#adb5bd' : '#8b5cf6';
-  const block = (label, val) => val ? `<div class="blk"><div class="blk-title">${label}</div><div class="blk-body">${val.replace(/\n/g,'<br>')}</div></div>` : '';
-  return `
-    <div class="op-title">
-      ${op.code ? `<span class="badge-code" style="background:${badgeColor}">${op.code}</span>` : ''}
-      <span class="op-name">${op.name}</span>
-      ${campos.includes('auto') && op.auto && op.auto !== NA ? `<span class="badge-auto" style="background:${autoColor}">${op.auto}</span>` : ''}
-      ${campos.includes('recusa') && op.recusa==='SIM' ? '<span class="badge-recusa">Recusa</span>' : ''}
-    </div>
-    <table class="info-table">
-      <tr><th>Área(s)</th><td colspan="3">${opAreaIds(op).map(id => { const a = getArea(id); return a ? a.name : id; }).join(' / ')}</td></tr>
-      ${linhas}
-    </table>
-    ${block('Análise / Procedimento', op.analise)}
-    ${block('Informações Importantes', op.info)}
-    ${block('Impactos na Reforma Tributária', op.reforma)}
-    ${block('Legislação', op.leg)}`;
+  const block = function(label, val) {
+    return val ? '<div class="blk"><div class="blk-title" style="color:' + cor.text + ';border-color:' + cor.border + '">' + label + '</div>' +
+                 '<div class="blk-body">' + val.replace(/\n/g,'<br>') + '</div></div>' : '';
+  };
+  const chipsCategorias = opAreaIds(op).map(function(id) {
+    const a = getArea(id); if (!a) return '';
+    const p = PDF_CATEGORY_COLORS[a.color] || PDF_CATEGORY_COLORS.slate;
+    return '<span class="cat-chip" style="background:' + p.bg + ';color:' + p.text + ';border-color:' + p.border + '">' + a.name + '</span>';
+  }).join(' ');
+  return '' +
+    '<div class="op-card-inner" style="border-color:' + cor.border + '">' +
+      '<div class="op-card-strip" style="background:' + cor.text + '"></div>' +
+      '<div class="op-card-body">' +
+        '<div class="op-title">' +
+          (op.code ? '<span class="badge-code" style="background:' + badgeColor + '">' + op.code + '</span>' : '') +
+          '<span class="op-name">' + op.name + '</span>' +
+          (campos.includes('auto') && op.auto && op.auto !== NA ? '<span class="badge-auto" style="background:' + autoColor + '">' + op.auto + '</span>' : '') +
+          (campos.includes('recusa') && op.recusa==='SIM' ? '<span class="badge-recusa">Recusa</span>' : '') +
+        '</div>' +
+        '<div class="pdf-cats">' + chipsCategorias + '</div>' +
+        '<div class="pdf-fields">' + linhas + '</div>' +
+        block('Análise / Procedimento', op.analise) +
+        block('Informações Importantes', op.info) +
+        block('Impactos na Reforma Tributária', op.reforma) +
+        block('Legislação', op.leg) +
+      '</div>' +
+    '</div>';
 }
 
 function pdfStyles() {
   return `
-    body { font-family: 'Inter', Arial, sans-serif; font-size: 12px; color: #1a1a2e; margin: 0; padding: 24px; }
-    .header { display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #e9ecef; padding-bottom: 14px; margin-bottom: 20px; }
-    .header-icon { width: 36px; height: 36px; background: #1a1a2e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 16px; }
-    .header-title { font-size: 16px; font-weight: 700; color: #1a1a2e; }
-    .header-sub { font-size: 11px; color: #868e96; margin-top: 2px; }
-    .op-card { border: 1px solid #e9ecef; border-radius: 10px; padding: 16px; margin-bottom: 18px; page-break-inside: avoid; }
-    .op-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    body { font-family: 'Inter', Arial, sans-serif; font-size: 12px; color: #1A1915; margin: 0; padding: 24px; background: #FBFAF6; }
+    .header { display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #E8C84A; padding-bottom: 14px; margin-bottom: 20px; }
+    .header-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #087556, #064b39); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .05em; }
+    .header-title { font-size: 16px; font-weight: 700; color: #14332A; letter-spacing: -.01em; }
+    .header-sub { font-size: 11px; color: #60746A; margin-top: 2px; }
+
+    /* Cartão: faixa lateral com a cor da categoria (mesmo padrão dos cards do portal). */
+    .op-card { margin-bottom: 18px; page-break-inside: avoid; }
+    .op-card-inner { display: flex; border: 1px solid #E7EDE9; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 2px 8px rgba(20, 56, 40, .05); }
+    .op-card-strip { width: 6px; flex-shrink: 0; }
+    .op-card-body { flex: 1; padding: 18px 20px; min-width: 0; }
+
+    .op-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
     .badge-code { display: inline-block; color: #fff; font-weight: 700; font-size: 12px; padding: 3px 10px; border-radius: 6px; }
-    .op-name { font-weight: 600; font-size: 14px; flex: 1; }
+    .op-name { font-weight: 600; font-size: 14px; flex: 1; color: #14332A; }
     .badge-auto { display: inline-block; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 99px; }
-    .badge-recusa { display: inline-block; background: #e05252; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 99px; }
-    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 11px; }
-    .info-table th { background: #f8f9fa; padding: 5px 8px; text-align: left; color: #495057; font-weight: 600; width: 18%; border: 1px solid #e9ecef; }
-    .info-table td { padding: 5px 8px; border: 1px solid #e9ecef; color: #1a1a2e; }
-    .blk { margin-bottom: 10px; }
-    .blk-title { font-weight: 700; font-size: 11px; color: #495057; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 5px; padding-bottom: 3px; border-bottom: 1px solid #e9ecef; }
-    .blk-body { font-size: 12px; line-height: 1.6; color: #343a40; white-space: pre-wrap; }
-    .footer { margin-top: 28px; border-top: 1px solid #e9ecef; padding-top: 10px; font-size: 10px; color: #adb5bd; display: flex; justify-content: space-between; }
+    .badge-recusa { display: inline-block; background: #791F1F; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 99px; }
+
+    /* Chip da categoria — mesmo visual dos chips do portal. */
+    .pdf-cats { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .cat-chip { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; border: 1px solid; }
+
+    /* Campos empilhados: cada campo ocupa a linha inteira, rótulo em cima, valor embaixo. */
+    .pdf-fields { display: block; margin-bottom: 14px; }
+    .pdf-field { padding: 8px 0; border-bottom: 1px solid #EEF1EE; }
+    .pdf-field:last-child { border-bottom: none; }
+    .pdf-field-label { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: #60746A; font-weight: 600; margin-bottom: 3px; }
+    .pdf-field-value { font-size: 12px; color: #1A1915; line-height: 1.55; }
+
+    /* Blocos longos: título com a cor da categoria. */
+    .blk { margin-bottom: 12px; }
+    .blk-title { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1.5px solid; }
+    .blk-body { font-size: 12px; line-height: 1.65; color: #343a40; white-space: pre-wrap; }
+
+    .footer { margin-top: 28px; border-top: 1px solid #E7EDE9; padding-top: 10px; font-size: 10px; color: #87978F; display: flex; justify-content: space-between; }
   `;
 }
 
@@ -2780,9 +2829,9 @@ function exportAllExcel() {
   if (!filtered.length) { alert('Nada visível para exportar.'); return; }
 
   const esc = v => '"' + String(v||'').replace(/"/g,'""') + '"';
-  // Só entram as colunas que alguma área do resultado realmente usa.
+  // Só entram as colunas que alguma categoria do resultado realmente usa.
   const colunas = todosOsCampos().filter(f => filtered.some(({op}) => camposDoOp(op).includes(f)));
-  const headers = ['Área(s)','Código','Nome'].concat(colunas.map(f => rotuloCampo(f)))
+  const headers = ['Categoria(s)','Código','Nome'].concat(colunas.map(f => rotuloCampo(f)))
     .concat(['Análise','Informações Importantes','Reforma Tributária','Legislação']);
   const rows = filtered.map(({op}) => [
     esc(opAreaIds(op).map(id => { const a = getArea(id); return a ? a.name : id; }).join(' / ')),
@@ -2914,7 +2963,7 @@ document.addEventListener('keydown', function(e) {
 
 
 
-<!-- Área de impressão (PDF) das cartilhas -->
+<!-- Categoria de impressão (PDF) das cartilhas -->
 <div id="print-area" style="display:none"></div>
 
 <!-- Botão flutuante "Sabia que...?" -->
@@ -3105,7 +3154,7 @@ document.addEventListener('keydown', function(e) {
   @media(max-width:700px){.slot-config,.tag-config-row{grid-template-columns:28px 1fr}.slot-enabled,.tag-config-row button{grid-column:2}.tag-config-row button{width:max-content}.slot-config input:nth-of-type(2),.tag-config-row input:nth-of-type(2){grid-column:2}}
 </style>
 <script>
-  /* Configuração por área: quatro posições principais estáveis + tags rápidas. */
+  /* Configuração por categoria: quatro posições principais estáveis + tags rápidas. */
   const SLOT_MODELOS = ['tipo','icms','ibs','recusa'];
   function idSlot(area, pos) { return 'slot_' + area.id.replace(/[^a-z0-9_]/gi,'_') + '_' + pos; }
   function copiarValorParaArea(area, origem, destino) {
@@ -3169,12 +3218,12 @@ document.addEventListener('keydown', function(e) {
           '<label class="slot-enabled"><input type="checkbox" data-slot-visible="'+campo+'"'+(visivel?' checked':'')+'> Exibir</label></div>';
       }).join('');
       const tags=tagsDaArea(area).map(campo=>'<div class="tag-config-row"><input type="text" data-tag-label="'+campo+'" value="'+esc(rotuloCampo(campo))+'"><input type="text" data-tag-options="'+campo+'" value="'+esc((fieldOptions[campo]||[]).filter(v=>!valoresIguais(v,NA)).join(', '))+'" placeholder="Valores separados por vírgula"><button class="fo-remove-btn" onclick="ocultarTagDaArea(\''+area.id+'\',\''+campo+'\')" title="Ocultar tag"><i class="ti ti-eye-off"></i></button></div>').join('');
-      return '<section class="area-config" data-area-config="'+area.id+'"><h4><i class="ti '+esc(area.icon)+'"></i> '+esc(area.name)+'</h4><p>Quatro caixas principais fixas. Desmarque uma para ocultá-la nesta área.</p>'+linhas+
+      return '<section class="area-config" data-area-config="'+area.id+'"><h4><i class="ti '+esc(area.icon)+'"></i> '+esc(area.name)+'</h4><p>Quatro caixas principais fixas. Desmarque uma para ocultá-la nesta categoria.</p>'+linhas+
         '<div class="tags-config"><strong>Tags rápidas</strong><p class="area-config-help">Informações curtas acima do card; não ocupam uma das quatro caixas.</p>'+tags+
         '<button class="fo-add-btn" onclick="adicionarTagDaArea(\''+area.id+'\')"><i class="ti ti-plus"></i> Adicionar tag</button></div></section>';
     }).join('');
     const footer=document.querySelector('#areas-modal .modal-footer');
-    if(footer && !footer.querySelector('.save-area-config')) { const b=document.createElement('button'); b.className='btn-modal-save save-area-config'; b.innerHTML='<i class="ti ti-device-floppy"></i> Salvar configuração das áreas'; b.onclick=salvarConfiguracaoDasAreas; footer.insertBefore(b,footer.firstChild); }
+    if(footer && !footer.querySelector('.save-area-config')) { const b=document.createElement('button'); b.className='btn-modal-save save-area-config'; b.innerHTML='<i class="ti ti-device-floppy"></i> Salvar configuração das categorias'; b.onclick=salvarConfiguracaoDasAreas; footer.insertBefore(b,footer.firstChild); }
   }
   function adicionarTagDaArea(areaId) {
     const area=getArea(areaId); if(!area) return; const id='tag_'+area.id+'_'+Date.now().toString(36);
@@ -3197,10 +3246,10 @@ document.addEventListener('keydown', function(e) {
       box.querySelectorAll('[data-tag-label]').forEach(input=>{ atualizarRotuloCampoArea(input.dataset.tagLabel,input.value); const texto=box.querySelector('[data-tag-options="'+input.dataset.tagLabel+'"]'); if (texto) atualizarOpcoesCampoArea(input.dataset.tagLabel,texto.value); });
     });
     normalizarValoresDosCampos(); saveAll(); populateFieldSelects(); refreshAreaUI(); updateStats(); render(); renderAreasModal();
-    alert('Configuração salva. Cards, filtros, formulários e PDFs já seguem as regras de cada área.');
+    alert('Configuração salva. Cards, filtros, formulários e PDFs já seguem as regras de cada categoria.');
   }
   const atualizarControlesDeArea=updateOwnerOnlyButtons;
-  updateOwnerOnlyButtons=function(){ atualizarControlesDeArea(); const b=document.getElementById('btn-field-opts'); if(b)b.style.display='none'; const a=document.getElementById('btn-areas'); if(a)a.innerHTML='<i class="ti ti-category"></i> Configurar áreas e campos'; const side=document.getElementById('btn-manage-areas'); if(side)side.innerHTML='<i class="ti ti-settings"></i> Configurar áreas'; };
+  updateOwnerOnlyButtons=function(){ atualizarControlesDeArea(); const b=document.getElementById('btn-field-opts'); if(b)b.style.display='none'; const a=document.getElementById('btn-areas'); if(a)a.innerHTML='<i class="ti ti-category"></i> Configurar categorias e campos'; const side=document.getElementById('btn-manage-areas'); if(side)side.innerHTML='<i class="ti ti-settings"></i> Configurar categorias'; };
 </script>
 <style>
   .area-option-tags { display:flex; flex-wrap:wrap; align-items:center; gap:5px; min-height:29px; }
@@ -3267,7 +3316,7 @@ document.addEventListener('keydown', function(e) {
       });
     });
     normalizarValoresDosCampos(); saveAll(); populateFieldSelects(); refreshAreaUI(); updateStats(); render(); renderAreasModal();
-    alert('Configuração salva. Cards, filtros, formulários e PDFs já seguem as regras de cada área.');
+    alert('Configuração salva. Cards, filtros, formulários e PDFs já seguem as regras de cada categoria.');
   };
 </script>
 <style>
@@ -3328,7 +3377,7 @@ document.addEventListener('keydown', function(e) {
   @media(max-width:700px) { .card-quick-meta .code,.card-quick-meta .badge { max-width:92px; overflow:hidden; text-overflow:ellipsis; } }
 </style>
 <script>
-  /* Cada área usa, no máximo, duas tags de triagem no card fechado. */
+  /* Cada categoria usa, no máximo, duas tags de triagem no card fechado. */
   var renderComTagsAnteriores = render;
   render = function() {
     renderComTagsAnteriores();
@@ -3380,7 +3429,7 @@ document.addEventListener('keydown', function(e) {
   .editor-section-title { grid-column:1 / -1; margin:8px 0 -2px; padding-top:10px; border-top:1px solid var(--border); color:var(--teal); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; }
 </style>
 <script>
-  /* O editor acompanha os campos e tags efetivamente configurados para a área. */
+  /* O editor acompanha os campos e tags efetivamente configurados para a categoria. */
   function camposEditor(ids, tipo) {
     const resultado=[]; (ids||[]).forEach(id=>{ const area=getArea(id); if(!area)return; const lista=tipo==='tag'?tagsDaArea(area):quadroDaArea(area); lista.forEach(f=>{if(!resultado.includes(f))resultado.push(f);}); });
     return resultado;
@@ -3401,7 +3450,21 @@ document.addEventListener('keydown', function(e) {
     document.getElementById('meta-modal').classList.add('show');
   }
   function aplicarCamposVisiveis(prefixo) {
-    if(prefixo!=='me') return;
+    /* Para o formulário de novo registro, aplica o filtro por categoria: só
+       aparecem os campos das categorias marcadas. */
+    if (prefixo !== 'me') {
+      const ids = readAreaChecks(prefixo);
+      const campos = ids.length ? camposDeAreas(ids) : todosOsCampos().slice();
+      todosOsCampos().forEach(function(f) {
+        const g = document.getElementById(prefixo + '-grp-' + f);
+        if (g) g.style.display = campos.includes(f) ? '' : 'none';
+      });
+      const wrap = document.getElementById(prefixo + '-campos-wrap');
+      if (wrap) wrap.style.display = campos.length ? '' : 'none';
+      const aviso = document.getElementById(prefixo + '-sem-campos');
+      if (aviso) aviso.style.display = campos.length ? 'none' : '';
+      return;
+    }
     const op=editingMetaIdx===null?{}:getOp(editingMetaIdx); montarEditorPorArea(readAreaChecks('me'),op||{});
   }
   function saveMetaModal() {
@@ -3452,7 +3515,7 @@ document.addEventListener('keydown', function(e) {
   @media(max-width:700px) { .card-header .card-areas { display:none; } .card-header .card-quick-meta { gap:3px; } }
 </style>
 <script>
-  /* Área → título → tags rápidas → seta. */
+  /* Categoria → título → tags rápidas → seta. */
   var renderComTagsNoCentro = render;
   render = function() {
     renderComTagsNoCentro();
@@ -3474,7 +3537,7 @@ document.addEventListener('keydown', function(e) {
   .card-quick-meta .badge.orientacoes { background:#ddd7ff!important; border-color:#a99be7!important; color:#4b3b93!important; }
 </style>
 <script>
-  /* Ícones semânticos e consistentes para a navegação das áreas. */
+  /* Ícones semânticos e consistentes para a navegação das categorias. */
   const ICONES_MODERNOS = {
     celula: 'ti-receipt-tax',
     amry0gda7: 'ti-credit-card',
@@ -3485,7 +3548,7 @@ document.addEventListener('keydown', function(e) {
   };
   const normalizarAreasComIcones = normalizeAreas;
   normalizeAreas = function(lista) {
-    /* O ícone sugerido só entra quando a área ainda está com o genérico:
+    /* O ícone sugerido só entra quando a categoria ainda está com o genérico:
        uma escolha feita na tela de configuração precisa sobreviver ao reload. */
     return normalizarAreasComIcones(lista).map(area => Object.assign(area, {icon: area.iconEscolhido ? area.icon : (ICONES_MODERNOS[area.id] || area.icon)}));
   };
@@ -3632,7 +3695,7 @@ document.addEventListener('keydown', function(e) {
   })();
 </script>
 <style>
-  /* Camada consolidada: uma configuração por área governa o portal inteiro. */
+  /* Camada consolidada: uma configuração por categoria governa o portal inteiro. */
   .area-config .tags-config > strong::after { content:' (até 2)'; color:var(--text-hint); font-weight:500; }
   .area-config .tag-config-row { grid-template-columns:minmax(135px,1fr) 1.4fr auto; }
   .area-config .tag-config-note { margin:7px 0 0; color:var(--text-hint); font-size:11px; }
@@ -3642,7 +3705,7 @@ document.addEventListener('keydown', function(e) {
 </style>
 <script>
   /*
-   * Fonte única das configurações por área.
+   * Fonte única das configurações por categoria.
    * Mantém compatibilidade com backups antigos (slots/quadro/tags) e não
    * deixa a normalização descartar cores ou opções configuradas.
    */
@@ -3652,7 +3715,7 @@ document.addEventListener('keydown', function(e) {
     const normalizadas = normalizarAreasPreservandoConfig(origem);
     return normalizadas.map((area, i) => {
       /* Casa pelo id: normalizeAreas descarta entradas inválidas e o índice
-         posicional colocaria a configuração de uma área em outra. */
+         posicional colocaria a configuração de uma categoria em outra. */
       const antiga = origem.find(x => x && x.id === area.id) || origem[i] || {};
       ['slots','tagOptionColors','__coresTagsIniciais','iconEscolhido'].forEach(chave => {
         if (antiga[chave] !== undefined) area[chave] = antiga[chave];
@@ -3699,7 +3762,7 @@ document.addEventListener('keydown', function(e) {
       const quantidade = (tagsDaArea(area) || []).length + (area.id === 'celula' ? 1 : 0);
       if (add) {
         add.disabled = quantidade >= 2;
-        add.title = add.disabled ? 'Cada área comporta no máximo duas tags rápidas.' : '';
+        add.title = add.disabled ? 'Cada categoria comporta no máximo duas tags rápidas.' : '';
       }
     });
   };
@@ -3709,7 +3772,7 @@ document.addEventListener('keydown', function(e) {
   adicionarTagDaArea = function(areaId) {
     const area = getArea(areaId);
     const usadas = (tagsDaArea(area) || []).length + (area && area.id === 'celula' ? 1 : 0);
-    if (usadas >= 2) { alert('Esta área já possui as duas tags rápidas permitidas.'); return; }
+    if (usadas >= 2) { alert('Esta categoria já possui as duas tags rápidas permitidas.'); return; }
     adicionarTagComLimite(areaId);
   };
 
@@ -3772,11 +3835,11 @@ document.addEventListener('keydown', function(e) {
     });
   };
 
-  /* O campo antigo de opções fica fora do fluxo: administra-se tudo em Configurar áreas e campos. */
+  /* O campo antigo de opções fica fora do fluxo: administra-se tudo em Configurar categorias e campos. */
   const botaoPrincipalAreas = document.getElementById('btn-areas');
-  if (botaoPrincipalAreas) botaoPrincipalAreas.innerHTML = '<i class="ti ti-settings"></i> Configurar áreas e campos';
+  if (botaoPrincipalAreas) botaoPrincipalAreas.innerHTML = '<i class="ti ti-settings"></i> Configurar categorias e campos';
   const botaoLateralAreas = document.getElementById('btn-manage-areas');
-  if (botaoLateralAreas) botaoLateralAreas.innerHTML = '<i class="ti ti-settings"></i> Configurar áreas';
+  if (botaoLateralAreas) botaoLateralAreas.innerHTML = '<i class="ti ti-settings"></i> Configurar categorias';
 
   /* A configuração só abre depois da leitura da nuvem — evita sobrescrever uma edição recente. */
   const abrirAreasDepoisDaSincronizacao = openAreasModal;
@@ -3905,7 +3968,7 @@ document.addEventListener('keydown', function(e) {
       } else {
         botao.disabled = false;
         botao.innerHTML = '<i class="ti ti-plus"></i> Adicionar segunda tag';
-        botao.title = 'Adicionar a segunda tag rápida desta área';
+        botao.title = 'Adicionar a segunda tag rápida desta categoria';
       }
     });
   };
@@ -3913,7 +3976,7 @@ document.addEventListener('keydown', function(e) {
   /*
    * Configuração estrutural do portal.
    * É independente da resposta do Apps Script antigo: guarda a aparência e
-   * o desenho de cada área (caixas, tags e cores) antes de qualquer render.
+   * o desenho de cada categoria (caixas, tags e cores) antes de qualquer render.
    */
   const AREA_CONFIG_ROOT_KEY = 'portal_fiscal_config_areas_v1';
   function lerConfigRaiz() {
@@ -3979,7 +4042,7 @@ document.addEventListener('keydown', function(e) {
   render();
 </script>
 <style>
-  /* Linha de administração da área: renomear, cor, ícone, ordem e exclusão. */
+  /* Linha de administração da categoria: renomear, cor, ícone, ordem e exclusão. */
   .area-config .ar-line.area-admin-line { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin:0 0 10px; padding:0 0 10px; border-bottom:1px dashed var(--border-md); }
   .area-config .ar-line.area-admin-line .ar-name { flex:1 1 190px; min-width:150px; }
   .area-config .ar-line.area-admin-line select { font:inherit; font-size:11px; padding:4px 6px; border:1px solid var(--border-md); border-radius:8px; background:#fff; color:var(--text-secondary); }
@@ -4002,7 +4065,7 @@ document.addEventListener('keydown', function(e) {
 </style>
 <script>
   /*
-   * Camada final da tela "Configurar áreas e campos". Reescrita para dar
+   * Camada final da tela "Configurar categorias e campos". Reescrita para dar
    * confiança total à administração:
    *
    * 1. Todos os controles de área (renomear, cor, ícone, ordem, excluir,
@@ -4029,7 +4092,7 @@ document.addEventListener('keydown', function(e) {
       const area = getArea(box.dataset.areaConfig);
       if (!area) return;
 
-      /* Nome da área. */
+      /* Nome da categoria. */
       const nomeInput = box.querySelector('.ar-name');
       if (nomeInput && nomeInput.value.trim()) area.name = nomeInput.value.trim();
 
@@ -4038,7 +4101,7 @@ document.addEventListener('keydown', function(e) {
       if (termos[0]) area.term = termos[0].value.trim() || area.term;
       if (termos[1]) area.termPlural = termos[1].value.trim() || area.termPlural;
 
-      /* Cor e ícone da área. */
+      /* Cor e ícone da categoria. */
       const selCor = box.querySelector('select[data-area-color]');
       if (selCor && selCor.value) area.color = selCor.value;
       const selIcone = box.querySelector('select[data-area-icon]');
@@ -4095,7 +4158,7 @@ document.addEventListener('keydown', function(e) {
     fieldOptions[campo] = unicos;
   }
 
-  /* HTML da linha de administração de cada área. */
+  /* HTML da linha de administração de cada categoria. */
   function controlesDaAreaHTML(area, indice) {
     const cores = Object.keys(AREA_COLOR_LABELS).map(function(k) {
       return '<option value="' + k + '"' + (k === area.color ? ' selected' : '') + '>' + AREA_COLOR_LABELS[k] + '</option>';
@@ -4105,15 +4168,15 @@ document.addEventListener('keydown', function(e) {
     }).join('');
     const q = "'" + area.id + "'";
     return '<div class="ar-line area-admin-line">' +
-      '<input class="ar-name" type="text" value="' + esc(area.name) + '" aria-label="Nome da área" data-area-name>' +
-      '<select data-area-color aria-label="Cor da área">' + cores + '</select>' +
-      '<select data-area-icon aria-label="Ícone da área">' + icones + '</select>' +
+      '<input class="ar-name" type="text" value="' + esc(area.name) + '" aria-label="Nome da categoria" data-area-name>' +
+      '<select data-area-color aria-label="Cor da categoria">' + cores + '</select>' +
+      '<select data-area-icon aria-label="Ícone da categoria">' + icones + '</select>' +
       '<button class="ar-icon-btn" type="button" title="Subir" onclick="moveArea(' + q + ',-1)"' + (indice === 0 ? ' disabled style="opacity:.3"' : '') + '><i class="ti ti-arrow-up"></i></button>' +
       '<button class="ar-icon-btn" type="button" title="Descer" onclick="moveArea(' + q + ',1)"' + (indice === areas.length - 1 ? ' disabled style="opacity:.3"' : '') + '><i class="ti ti-arrow-down"></i></button>' +
-      '<button class="ar-icon-btn del" type="button" title="Excluir área" onclick="removeArea(' + q + ')"><i class="ti ti-trash"></i></button>' +
+      '<button class="ar-icon-btn del" type="button" title="Excluir categoria" onclick="removeArea(' + q + ')"><i class="ti ti-trash"></i></button>' +
       '<input class="ar-term" type="text" value="' + esc(area.term) + '" placeholder="operação" aria-label="Como chamar um registro">' +
       '<input class="ar-term" type="text" value="' + esc(area.termPlural) + '" placeholder="operações" aria-label="Como chamar vários registros">' +
-      '<p class="area-admin-hint">' + countAreaOps(area.id) + ' registro(s) nesta área · excluir move os registros para a primeira área da lista.</p>' +
+      '<p class="area-admin-hint">' + countAreaOps(area.id) + ' registro(s) nesta categoria · excluir move os registros para a primeira categoria da lista.</p>' +
     '</div>';
   }
 
@@ -4236,11 +4299,11 @@ document.addEventListener('keydown', function(e) {
   closeAreasModal = function() {
     if (configAreasAlterada && document.querySelector('#ar-list [data-area-config]')) {
       capturarTelaParaMemoria();
-      if (confirm('Há alterações não salvas na configuração das áreas.\n\nDeseja SALVAR antes de fechar?\n\n• OK — salvar e fechar\n• Cancelar — descartar e fechar')) {
+      if (confirm('Há alterações não salvas na configuração das categorias.\n\nDeseja SALVAR antes de fechar?\n\n• OK — salvar e fechar\n• Cancelar — descartar e fechar')) {
         salvarConfiguracaoDasAreas({semFechar: true});
         mostrarToast('Configuração salva.');
       } else if (snapshotAoAbrir) {
-        /* Restaura o snapshot completo (a nova área/tag/opção some, o que foi editado volta ao anterior). */
+        /* Restaura o snapshot completo (a nova categoria/tag/opção some, o que foi editado volta ao anterior). */
         areas.length = 0;
         snapshotAoAbrir.areas.forEach(function(a) { areas.push(a); });
         Object.keys(fieldOptions).forEach(function(k) { delete fieldOptions[k]; });
