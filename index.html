@@ -108,6 +108,27 @@
   .stat-mini .val { font-size: 18px; font-weight: 600; color: var(--text-primary); }
   .stat-mini .lbl { font-size: 11px; color: var(--text-secondary); }
 
+  /* ── Ícones SVG inline (sidebar) ── */
+  .ti-svg { width: 1em; height: 1em; flex-shrink: 0; vertical-align: -0.125em; }
+  .filter-btn .ti-svg { width: 14px; height: 14px; }
+  .area-btn .ti-svg { width: 15px; height: 15px; }
+  .area-manage-btn .ti-svg { width: 13px; height: 13px; }
+
+  /* ── Ordenação da lista ── */
+  .sort-select { font-size: 12px; font-family: inherit; border: 0.5px solid var(--border-md); border-radius: var(--radius-md); padding: 5px 8px; background: var(--surface); color: var(--text-secondary); cursor: pointer; outline: none; }
+  .sort-select:hover, .sort-select:focus { color: var(--text-primary); }
+
+  /* ── Limpar filtro ── */
+  .results-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .btn-limpar-filtro { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-family: inherit; font-weight: 500; border: 0.5px solid var(--blue-border); border-radius: 20px; padding: 3px 10px; background: var(--blue-light); color: var(--blue); cursor: pointer; max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background 0.12s; }
+  .btn-limpar-filtro:hover { background: rgba(24,95,165,0.15); }
+
+  /* ── Badge de tipo no histórico ── */
+  .el-tipo { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 8px; border-radius: 20px; margin-right: 8px; vertical-align: 1px; }
+  .el-tipo.inclusao { background: var(--green-light); color: var(--green); }
+  .el-tipo.edicao   { background: var(--amber-light); color: var(--amber); }
+  .el-tipo.exclusao { background: var(--red-light);   color: var(--red); }
+
   /* ── Main ── */
   .main { flex: 1; padding: 1.5rem 2rem; max-width: 900px; }
   .search-wrap { position: relative; margin-bottom: 1rem; }
@@ -579,7 +600,7 @@
     <div class="sidebar-section">
       <div class="sidebar-label">Categorias</div>
       <div id="area-filters"></div>
-      <button class="fo-add-btn area-manage-btn" id="btn-manage-areas" style="display:none" onclick="openAreasModal()"><i class="ti ti-settings"></i> Gerenciar áreas</button>
+      <button class="fo-add-btn area-manage-btn" id="btn-manage-areas" style="display:none" onclick="openAreasModal()"><svg class="ti-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></svg> Gerenciar áreas</button>
     </div>
     <div id="filters-wrap"></div>
     <div class="sidebar-section" id="resumo-wrap"></div>
@@ -591,7 +612,16 @@
       <input type="text" id="search-input" placeholder="Buscar por código, nome, análise, tributação..." oninput="render()" autocomplete="off">
     </div>
     <div class="results-header">
-      <span class="results-count" id="results-count">68 operações encontradas</span>
+      <span class="results-left">
+        <span class="results-count" id="results-count">68 operações encontradas</span>
+        <button class="btn-limpar-filtro" id="btn-limpar-filtro" style="display:none" onclick="setFiltroAll()" title="Remover o filtro ativo"></button>
+      </span>
+      <select id="sort-select" class="sort-select" onchange="setOrdenacao(this.value)" title="Ordenar lista">
+        <option value="padrao">Ordem padrão</option>
+        <option value="az">Ordem alfabética (A–Z)</option>
+        <option value="recente">Mais recentes primeiro</option>
+        <option value="area">Agrupar por categoria</option>
+      </select>
     </div>
     <div id="results-container"></div>
 
@@ -692,7 +722,7 @@ let editLog = [];
 // conflito de PIN (um sendo prefixo do outro). A "dona" deve trocar esses
 // PINs assim que possível pelo botão "Administradoras" na barra de admin.
 const DEFAULT_ADMIN_USERS = [
-  { id: 'owner',  name: 'Dona',           role: 'owner', pin: '0507' },
+  { id: 'owner',  name: 'Owner',          role: 'owner', pin: '0507' },
   { id: 'admin1', name: 'Administradora', role: 'admin', pin: '7421' }
 ];
 let adminUsers = [];
@@ -812,14 +842,15 @@ function updateEditorNameLabel() {
   const el = document.getElementById('editor-name-label');
   if (!el) return;
   if (!currentAdminUser) { el.textContent = ''; return; }
-  el.textContent = currentAdminUser.name + (currentAdminUser.role === 'owner' ? ' (dona)' : '');
+  el.textContent = currentAdminUser.name + (currentAdminUser.role === 'owner' ? ' (owner)' : '');
   updateOwnerOnlyButtons();
 }
 // "Histórico" e "Opções dos campos" só fazem sentido para a dona, que é
 // quem decide as regras gerais do portal — administradoras comuns não veem.
 function updateOwnerOnlyButtons() {
   const isOwner = !!currentAdminUser && currentAdminUser.role === 'owner';
-  ['btn-edit-log', 'btn-field-opts', 'btn-areas', 'btn-manage-areas', 'btn-toggle-cartilhas'].forEach(id => {
+  ['btn-edit-log', 'btn-field-opts', 'btn-areas', 'btn-manage-areas', 'btn-toggle-cartilhas',
+   'btn-export-backup', 'export-backup-divider'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isOwner ? '' : 'none';
   });
@@ -906,7 +937,7 @@ function renderAdminUsersModal() {
   const list = isOwner ? adminUsers : adminUsers.filter(u => u.id === currentAdminUser.id);
   document.getElementById('au-list').innerHTML = list.map(u => `
     <div class="fo-field-block">
-      <div class="fo-field-title">${u.role === 'owner' ? 'Dona (acesso total)' : 'Administradora'}</div>
+      <div class="fo-field-title">${u.role === 'owner' ? 'Owner (acesso total)' : 'Administradora'}</div>
       <div class="fo-option-row">
         <input type="text" value="${esc(u.name)}" placeholder="Nome" onchange="updateAdminUserField('${u.id}','name',this.value)">
       </div>
@@ -1428,7 +1459,10 @@ function termFor(n) { const t = currentTerms(); return n === 1 ? t.s : t.p; }
 function setArea(id) {
   currentArea = id;
   expandedIdx = null;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'todos'));
+  // Trocar de categoria zera o filtro: cada categoria tem seus próprios
+  // campos, então um filtro herdado da anterior só esconderia registros
+  // sem explicação (a lista renderiza de novo já com "Todos" ativo).
+  filtroAtual = { escopo: 'all' };
   refreshAreaUI();
   updateStats();
   render();
@@ -1450,15 +1484,53 @@ function corParaValor(v, i) {
   return PALETA_VALOR[i % PALETA_VALOR.length];
 }
 
+const SVG_ICONES = {
+  'arrow-bar-to-down': '<path d="M4 20l16 0"/><path d="M12 14l0 -10"/><path d="M12 14l4 -4"/><path d="M12 14l-4 -4"/>',
+  'arrow-bar-up': '<path d="M12 4l0 10"/><path d="M12 4l4 4"/><path d="M12 4l-4 4"/><path d="M4 20l16 0"/>',
+  'briefcase': '<path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"/><path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"/><path d="M12 12l0 .01"/><path d="M3 13a20 20 0 0 0 18 0"/>',
+  'broadcast': '<path d="M18.364 19.364a9 9 0 1 0 -12.728 0"/><path d="M15.536 16.536a5 5 0 1 0 -7.072 0"/><path d="M12 13m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>',
+  'building-bank': '<path d="M3 21l18 0"/><path d="M3 10l18 0"/><path d="M5 6l7 -3l7 3"/><path d="M4 10l0 11"/><path d="M20 10l0 11"/><path d="M8 14l0 3"/><path d="M12 14l0 3"/><path d="M16 14l0 3"/>',
+  'check': '<path d="M5 12l5 5l10 -10"/>',
+  'clipboard-list': '<path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"/><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M9 12l.01 0"/><path d="M13 12l2 0"/><path d="M9 16l.01 0"/><path d="M13 16l2 0"/>',
+  'cpu': '<path d="M5 5m0 1a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1z"/><path d="M9 9h6v6h-6z"/><path d="M3 10h2"/><path d="M3 14h2"/><path d="M10 3v2"/><path d="M14 3v2"/><path d="M21 10h-2"/><path d="M21 14h-2"/><path d="M14 21v-2"/><path d="M10 21v-2"/>',
+  'device-tv': '<path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"/><path d="M16 3l-4 4l-4 -4"/>',
+  'file-invoice': '<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 7l1 0"/><path d="M9 13l6 0"/><path d="M13 17l2 0"/>',
+  'folder': '<path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2"/>',
+  'hand-stop': '<path d="M8 13v-7.5a1.5 1.5 0 0 1 3 0v6.5"/><path d="M11 5.5v-2a1.5 1.5 0 1 1 3 0v8.5"/><path d="M14 5.5a1.5 1.5 0 0 1 3 0v6.5"/><path d="M17 7.5a1.5 1.5 0 0 1 3 0v8.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47"/>',
+  'inbox': '<path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M4 13h3l3 3h4l3 -3h3"/>',
+  'layout-grid': '<path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/>',
+  'layout-list': '<path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M4 14m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/>',
+  'lock': '<path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/>',
+  'notes': '<path d="M5 3m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"/><path d="M9 7l6 0"/><path d="M9 11l6 0"/><path d="M9 15l4 0"/>',
+  'package': '<path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"/><path d="M12 12l8 -4.5"/><path d="M12 12l0 9"/><path d="M12 12l-8 -4.5"/><path d="M16 5.25l-8 4.5"/>',
+  'receipt-tax': '<path d="M9 14l6 -6"/><circle cx="9.5" cy="8.5" r=".5" fill="currentColor"/><circle cx="14.5" cy="13.5" r=".5" fill="currentColor"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"/>',
+  'rotate-clockwise': '<path d="M4.05 11a8 8 0 1 1 .5 4m-.5 5v-5h5"/>',
+  'settings': '<path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/>',
+  'shield-check': '<path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06"/><path d="M15 19l2 2l4 -4"/>',
+  'star': '<path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>',
+  'tag': '<path d="M7.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z"/>',
+  'truck-delivery': '<path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5"/><path d="M3 9l4 0"/>',
+  'users': '<path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/>',
+  'world': '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/>',
+  'x': '<path d="M18 6l-12 12"/><path d="M6 6l12 12"/>'
+};
+// Devolve o ícone como SVG inline (sidebar), com fallback para a fonte
+// de ícones caso o nome não esteja no mapa acima.
+function svgIcon(name, extra) {
+  const chave = String(name || '').replace(/^ti-/, '');
+  const corpo = SVG_ICONES[chave];
+  if (!corpo) return '<i class="ti ' + name + '"' + (extra || '') + '></i>';
+  return '<svg class="ti-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"' + (extra || '') + '>' + corpo + '</svg>';
+}
+
 // Toda a barra lateral é gerada a partir da categoria. O filtro atual é
-// { escopo: 'all' | 'custom' | 'valor', campo, valor }. Só há um por vez.
+// { escopo: 'all' | 'valor', campo, valor }. Só há um por vez.
 let filtroAtual = { escopo: 'all' };
 function opUsaCampo(op, campo) {
   return camposDoOp(op).includes(campo);
 }
 function opBate(op, f) {
   if (!f || f.escopo === 'all') return true;
-  if (f.escopo === 'custom')    return !!op.custom;
   if (!opUsaCampo(op, f.campo)) return false;
   return op[f.campo] === f.valor;
 }
@@ -1492,7 +1564,12 @@ function botaoFiltro(cls, ativo, iconeHTML, texto, contagem, onclick) {
 }
 // Só de olho: valores muito raros (< 1% do total, mínimo 2) somem para
 // a barra não virar uma lista longa quando uma opção tem 1 registro solo.
+// Só de olho: valores muito raros (< 1% do total, mínimo 2) somem para
+// a barra não virar uma lista longa quando uma opção tem 1 registro solo.
+// Em categorias pequenas (menos de 20 registros) o corte não se aplica:
+// com poucos registros, todo valor é relevante como filtro.
 function limparRaros(buckets, total) {
+  if (total < 20) return buckets;
   const min = Math.max(2, Math.ceil(total * 0.01));
   return buckets.filter(b => b.n >= min || b.orfao);
 }
@@ -1508,7 +1585,7 @@ function renderFiltros() {
   let html = '<div class="sidebar-section">' +
     '<div class="sidebar-label">Filtros</div>' +
     botaoFiltro('todos', filtroAtual.escopo === 'all',
-      '<i class="ti ti-layout-list"></i>', 'Todos', total,
+      svgIcon('layout-list'), 'Todos', total,
       "setFiltroAll(this)") + '</div>';
 
   camposParaFiltrar.forEach(campo => {
@@ -1519,7 +1596,7 @@ function renderFiltros() {
     buckets.forEach((b, i) => {
       const [ic, cor] = ICONE_VALOR[b.v] || [null, corParaValor(b.v, i)];
       const icone = ic
-        ? '<i class="ti ' + ic + '" style="color:' + cor + '"></i>'
+        ? svgIcon(ic, ' style="color:' + cor + '"')
         : '<span class="filter-dot" style="background:' + cor + '"></span>';
       const ativo = filtroAtual.escopo === 'valor' && filtroAtual.campo === campo && filtroAtual.valor === b.v;
       const rotulo = b.v + (b.orfao ? ' (fora da lista)' : '');
@@ -1529,15 +1606,6 @@ function renderFiltros() {
     html += '</div>';
   });
 
-  // "Adicionadas por mim" — extra, aparece para quem cadastrou algo.
-  const nCustom = ops.filter(o => !!o.custom).length;
-  if (nCustom > 0) {
-    html += '<div class="sidebar-section">' +
-      '<div class="sidebar-label">Outros</div>' +
-      botaoFiltro('custom', filtroAtual.escopo === 'custom',
-        '<i class="ti ti-sparkles" style="color:#534AB7"></i>', 'Adicionadas por mim', nCustom,
-        "setFiltroCustom(this)") + '</div>';
-  }
   wrap.innerHTML = html;
 }
 
@@ -1578,7 +1646,7 @@ function renderAreaFilters() {
   const all = currentArea === 'all';
   let html = '<button class="area-btn' + (all ? ' active' : '') + '"' +
     (all ? ' style="background:var(--surface2);color:var(--text-primary)"' : '') +
-    ' onclick="setArea(\'all\')"><i class="ti ti-layout-grid"></i><span class="nm">Todas as categorias</span>' +
+    ' onclick="setArea(\'all\')">' + svgIcon('layout-grid') + '<span class="nm">Todas as categorias</span>' +
     '<span class="count">' + allOps().length + '</span></button>';
   html += areas.map(a => {
     const st = areaStyle(a);
@@ -1586,7 +1654,7 @@ function renderAreaFilters() {
     return '<button class="area-btn' + (on ? ' active' : '') + '"' +
       (on ? ' style="background:' + st.bg + ';color:' + st.fg + '"' : '') +
       ' onclick="setArea(\'' + a.id + '\')" title="' + esc(a.name) + '">' +
-      '<i class="ti ' + esc(a.icon) + '" style="color:' + st.fg + '"></i>' +
+      svgIcon(a.icon, ' style="color:' + st.fg + '"') +
       '<span class="nm">' + esc(a.name) + '</span>' +
       '<span class="count">' + countAreaOps(a.id) + '</span></button>';
   }).join('');
@@ -1820,7 +1888,6 @@ function updateStats() {
 }
 
 function setFiltroAll()    { filtroAtual = { escopo: 'all' };    expandedIdx = null; renderFiltros(); render(); }
-function setFiltroCustom() { filtroAtual = { escopo: 'custom' }; expandedIdx = null; renderFiltros(); render(); }
 function setFiltroValor(campo, valor) {
   filtroAtual = { escopo: 'valor', campo, valor };
   expandedIdx = null; renderFiltros(); render();
@@ -1872,12 +1939,44 @@ function renderBlock(blockClass, icon, label, fieldKey, op, realIdx, q) {
   </div>`;
 }
 
+// ── Ordenação da lista ─────────────────────────────────────────
+// 'padrao' preserva a ordem original; as demais reordenam apenas a
+// exibição — o índice real (ri) segue apontando para allOps().
+let ordenacaoAtual = 'padrao';
+function setOrdenacao(v) { ordenacaoAtual = v; render(); }
+// Data de referência para "mais recentes": última edição ou, para
+// registros criados no portal, a data de inclusão. Registros da base
+// nunca tocados ficam por último, na ordem original.
+function dataDoOp(op) { return op._editedAt || op.addedAt || ''; }
+function ordenarOps(list) {
+  const porNome = (x, y) =>
+    String(x.op.name || '').localeCompare(String(y.op.name || ''), 'pt-BR', { sensitivity: 'base' });
+  if (ordenacaoAtual === 'az') return [...list].sort(porNome);
+  if (ordenacaoAtual === 'recente')
+    return [...list].sort((x, y) => String(dataDoOp(y.op)).localeCompare(String(dataDoOp(x.op))));
+  if (ordenacaoAtual === 'area') {
+    const pos = id => { const i = areas.findIndex(a => a.id === id); return i < 0 ? 999 : i; };
+    return [...list].sort((x, y) =>
+      pos(opAreaIds(x.op)[0]) - pos(opAreaIds(y.op)[0]) || porNome(x, y));
+  }
+  return list;
+}
+
 function render() {
   const q = document.getElementById('search-input').value.toLowerCase().trim();
-  const filtered = visibleOps();
+  const filtered = ordenarOps(visibleOps());
 
   document.getElementById('results-count').textContent =
     'Exibindo ' + filtered.length + ' ' + termFor(filtered.length);
+
+  // Botão "Limpar filtro": só aparece quando há filtro ativo, mostrando
+  // o valor filtrado para deixar claro o que está cortando a lista.
+  const btnLimpar = document.getElementById('btn-limpar-filtro');
+  if (btnLimpar) {
+    const filtrando = filtroAtual && filtroAtual.escopo !== 'all';
+    btnLimpar.style.display = filtrando ? '' : 'none';
+    if (filtrando) btnLimpar.textContent = '✕ Limpar filtro' + (filtroAtual.valor ? ' — ' + filtroAtual.valor : '');
+  }
 
   const container = document.getElementById('results-container');
   if (!filtered.length) {
@@ -2115,9 +2214,18 @@ function stampEdit(obj) {
   obj._editedAt = new Date().toISOString();
   return obj;
 }
+// Classifica a ação do histórico: inclusão, edição ou exclusão.
+// Deduzido do verbo inicial; entradas antigas (sem tipo salvo) também
+// passam por aqui na hora de exibir.
+function tipoDeAcao(action) {
+  const a = String(action || '').toLowerCase();
+  if (/^(adicionou|criou|restaurou)/.test(a)) return 'inclusao';
+  if (/^(excluiu|removeu)/.test(a))           return 'exclusao';
+  return 'edicao';
+}
 // Adiciona uma entrada ao histórico global e sincroniza.
 function logEdit(action, code, name) {
-  editLog.unshift({ action, code: code || '', name: name || '', by: editorName || 'Administradora', at: new Date().toISOString() });
+  editLog.unshift({ action, tipo: tipoDeAcao(action), code: code || '', name: name || '', by: editorName || 'Administradora', at: new Date().toISOString() });
   editLog = normalizeEditLog(editLog);
   saveAll();
 }
@@ -2138,11 +2246,15 @@ function renderEditLogModal() {
     wrap.innerHTML = '<p class="fo-hint">Nenhuma alteração registrada ainda.</p>';
     return;
   }
-  wrap.innerHTML = editLog.map(e => `
+  const ROTULO_TIPO = { inclusao: 'Inclusão', edicao: 'Edição', exclusao: 'Exclusão' };
+  wrap.innerHTML = editLog.map(e => {
+    const tipo = ROTULO_TIPO[e.tipo] ? e.tipo : tipoDeAcao(e.action);
+    return `
     <div class="el-row">
-      <div class="el-main"><strong>${esc(e.action)}</strong>${e.code ? ' — ' + esc(e.code) : ''}${e.name ? ' · ' + esc(e.name) : ''}</div>
+      <div class="el-main"><span class="el-tipo ${tipo}">${ROTULO_TIPO[tipo]}</span><strong>${esc(e.action)}</strong>${e.code ? ' — ' + esc(e.code) : ''}${e.name ? ' · ' + esc(e.name) : ''}</div>
       <div class="el-meta">${esc(e.by)} · ${formatDateTime(e.at)}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 // Atualiza os <select> dos formulários "Editar operação" e "Nova operação"
 // com as opções atuais de cada campo, preservando o valor selecionado.
@@ -3608,13 +3720,19 @@ document.addEventListener('keydown', function(e) {
   render();
 </script>
 <script>
+  /* Backup completo (JSON) — visível somente para o owner. O Excel, logo
+     acima no mesmo menu, continua disponível para todos. */
   (function adicionarBackupNoMenu() {
     const menu=document.getElementById('export-menu');
     if(!menu || menu.querySelector('.btn-export-backup'))return;
     const separador=document.createElement('div'); separador.className='export-menu-divider';
+    separador.id='export-backup-divider';
     const botao=document.createElement('button'); botao.className='btn-export-backup';
+    botao.id='btn-export-backup';
     botao.innerHTML='<i class="ti ti-database-export"></i> Backup completo (JSON)';
     botao.onclick=function(){exportBackup();closeExportMenu();};
+    const isOwner = !!currentAdminUser && currentAdminUser.role === 'owner';
+    separador.style.display = botao.style.display = isOwner ? '' : 'none';
     menu.appendChild(separador);menu.appendChild(botao);
   })();
 </script>
